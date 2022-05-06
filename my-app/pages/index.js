@@ -21,7 +21,11 @@ export default function Home() {
   const zero = BigNumber.from("0");
 
   // 2. Keep track of amount users donate
-  const [amount, setAmount] = useState("0");
+  const [amount, setAmount] = useState("");
+
+  const [totalDonated, setTotalDonated] = useState("");
+  const [totalDonors, setTotalDonors] = useState("");
+  const [totalTokensMinted, setTotalTokensMinted] = useState("");
 
   // 1. create a reference
   const web3ModalRef = useRef();
@@ -37,16 +41,15 @@ export default function Home() {
         provider
       );
 
-      setLoading(true);
+      const getDonation = await donationContract.getDonation();
+      // await getDonation.wait();
+      const getDonors = await donationContract.totalDonors();
+      const getTokensMinted = await donationContract.tokenIds();
 
-      const getDonations = await donationContract.totalDonated();
-      await getDonations.wait();
-      // const getDonors = await donationContract.totalDonors();
-      // const getTokensMinted = await donationContract.tokensIds();
-
-      setTotalDonated(getDonations.toString());
-      // setTotalDonors(getDonors.toString());
-      // setTotalTokensMinted(getTokensMinted.toString());
+      const toEther = utils.formatEther(getDonation);
+      setTotalDonated(toEther.toString());
+      setTotalDonors(getDonors.toString());
+      setTotalTokensMinted(getTokensMinted.toString());
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +68,9 @@ export default function Home() {
       setLoading(true);
       // const donatedAmount = utils.parseEther(amount);
 
-      const tx = await donationContract.donate(cost);
+      const tx = await donationContract.donate({
+        value: utils.parseEther(cost),
+      });
       await tx.wait();
 
       setLoading(false);
@@ -108,6 +113,15 @@ export default function Home() {
     return web3Provider;
   };
 
+  const onPageLoad = async () => {
+    await connectWallet();
+
+    await displayInfo();
+    setInterval(async () => {
+      await displayInfo();
+    }, 5 * 1000);
+  };
+
   // 1. To initialize the web3ModalRef when the website loads
   useEffect(() => {
     if (!walletConnected) {
@@ -116,10 +130,8 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
-
-      connectWallet();
-      // displayInfo();
     }
+    onPageLoad();
   }, []);
 
   // const handleChange = (value) => {
@@ -147,11 +159,7 @@ export default function Home() {
               type="number"
               className={styles.input}
               // value={amount}
-              onChange={(e) =>
-                setAmount(
-                  BigNumber.from(utils.parseEther(e.target.value || "0"))
-                )
-              }
+              onChange={(e) => setAmount(e.target.value)}
             />
             <button
               className={styles.button}
@@ -183,6 +191,11 @@ export default function Home() {
         <img className={styles.image} src="/ukr1.jpg" alt="" />
         <div className={styles.title}>Join in helping Ukraine</div>
         <div>
+          <div className={styles.description}>
+            <span>{totalDonated}</span>
+            <span>{totalDonors}</span>
+            <span>{totalTokensMinted}</span>
+          </div>
           <div>{renderButton()}</div>
         </div>
       </div>

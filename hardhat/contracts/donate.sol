@@ -28,7 +28,7 @@ contract Donation is ERC721, Ownable{
         totalDonated += msg.value;
         totalDonors += 1;
         donorsAddress.push(msg.sender);
-        // mint(msg.sender);
+        mint(msg.sender);
 
         emit Log(msg.sender, msg.value);    
         
