@@ -1,5 +1,5 @@
 export const DONATION_CONTRACT_ADDRESS =
-  "0x57374ecd49B607ab1DEe5dCDA33DfD74B9558a15";
+  "0x663476fEfA273cCde921F670AE3B4aebc459Dbb3";
 export const abi = [
   {
     inputs: [

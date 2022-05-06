@@ -1,3 +1,3 @@
-const METADATA_URL = "https://nft-collection-sneh1999.vercel.app/api/";
+const METADATA_URL = "https://donation-phi.vercel.app/api/nft";
 
 module.exports = { METADATA_URL };

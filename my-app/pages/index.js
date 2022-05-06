@@ -148,7 +148,7 @@ export default function Home() {
     }
 
     if (loading) {
-      return <button className={styles.description}>Loading...</button>;
+      return <h1 className={styles.description}>Loading...</h1>;
     }
 
     if (walletConnected) {

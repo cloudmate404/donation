@@ -16,7 +16,7 @@ contract Donation is ERC721, Ownable{
 
 
 
-    constructor(string memory baseURI) ERC721("Ukraine Relief", "UKR") {
+    constructor(string memory baseURI) ERC721("Ukraine Relief Token", "UKR") {
         _owner = msg.sender;
         _baseTokenURI = baseURI;
         
