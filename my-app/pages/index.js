@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import Web3Modal from "web3modal";
-import { BigNumber, Contract, ethers, providers, utils } from "ethers";
+import { BigNumber, Contract, providers, utils } from "ethers";
 import { DONATION_CONTRACT_ADDRESS, abi } from "../constants";
 
 import Head from "next/head";
