@@ -8,8 +8,7 @@ export default function handler(req, res) {
   const description =
     "Ukraine Relief Token is a complimentary token for whoever donates to Ukraine Relief Funds";
 
-  const image =
-    "https://raw.githubusercontent.com/cloudmate404/donation/main/my-app/public/ukraineNFT.png";
+  const image = `https://raw.githubusercontent.com/cloudmate404/donation/main/my-app/public/ukraineNFT.png`;
 
   return res.json({
     name: name,
