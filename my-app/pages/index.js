@@ -11,6 +11,7 @@ export default function Home() {
   // 1. WE WANT USERS TO CONNECT THEIR WALLETS;
   // 2. ALLOW USERS TO DONATE
   // 3. ALLOW USERS TO SEE TOTAL DONATIONS // TOTAL DONORS AND TOKENS MINTED
+  // 4. ALLOW ONLY OWNER TO SEE AND CALL WITHDRAW AND TRANSFER OWNERSHIP FUNCTIONS
 
   // 1. state keep track of if user is connected to the wallet and
   const [walletConnected, setWalletConnected] = useState(false);
@@ -27,9 +28,64 @@ export default function Home() {
   const [totalDonors, setTotalDonors] = useState("");
   const [totalTokensMinted, setTotalTokensMinted] = useState("");
 
+  // 4 - Keep track of if user is owner
+  const [isOwner, setIsOwner] = useState(false);
+
   // 1. create a reference
   const web3ModalRef = useRef();
 
+  // function to get owner
+  const getOwner = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const donationContract = new Contract(
+        DONATION_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const owner = await donationContract.owner();
+      const userAddress = await signer.getAddress();
+      if (owner.toLowerCase() === userAddress.toLowerCase()) {
+        setIsOwner(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 4. Withdraw function
+  const withdrawFunds = async (money) => {
+    try {
+      setLoading(true);
+      const signer = await getProviderOrSigner(true);
+      const donationContract = new Contract(
+        DONATION_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+
+      const tx = await donationContract.withdrawFunds();
+      await tx.wait();
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  // 5 - Transfer Ownership function
+  const transferOwnership = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const donationContract = new Contract(
+        DONATION_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const tx = await donationContract.transferOwnership();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // 3. Display total donations and other infos
   const displayInfo = async () => {
     try {
@@ -115,6 +171,7 @@ export default function Home() {
 
   const onPageLoad = async () => {
     await connectWallet();
+    await getOwner();
 
     await displayInfo();
     setInterval(async () => {
@@ -151,7 +208,7 @@ export default function Home() {
       return <h1 className={styles.description}>Loading...</h1>;
     }
 
-    if (walletConnected) {
+    if (isOwner && walletConnected) {
       return (
         <div>
           <div className={styles.donationMain}>
@@ -170,6 +227,14 @@ export default function Home() {
               Donate
             </button>
           </div>
+          <button
+            className={styles.button}
+            onClick={() => {
+              withdrawFunds(amount);
+            }}
+          >
+            Withdraw Funds
+          </button>
         </div>
       );
     }

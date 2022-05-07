@@ -52,7 +52,7 @@ contract Donation is ERC721, Ownable{
         return totalDonors;
     }
     
-    function withdrawFunds() onlyOwner public{
+    function withdrawFunds() payable onlyOwner public{
         // gets the amount stored in this contract
         uint donations = address(this).balance;
 
