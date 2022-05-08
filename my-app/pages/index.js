@@ -22,7 +22,7 @@ export default function Home() {
   const zero = BigNumber.from("0");
 
   // 2. Keep track of amount users donate
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
 
   const [totalDonated, setTotalDonated] = useState("");
   const [totalDonors, setTotalDonors] = useState("");
@@ -65,7 +65,7 @@ export default function Home() {
       );
 
       const tx = await donationContract.withdrawFunds({
-        value: Number(money),
+        value: utils.parseUnits(money.toString()),
       });
       await tx.wait();
     } catch (error) {
@@ -127,7 +127,7 @@ export default function Home() {
       // const donatedAmount = utils.parseEther(amount);
 
       const tx = await donationContract.donate({
-        value: cost.toNumber(),
+        value: utils.parseEther(cost.toString()),
       });
       await tx.wait();
 
