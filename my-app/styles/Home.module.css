@@ -35,7 +35,22 @@
   object-fit: cover;
 }
 
+.content {
+  /* display: flex; */
+  outline: 1px solid #ccc;
+  width: auto;
+  justify-content: center;
+}
+
+.donationInfo {
+  /* margin-left: 4rem; */
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
 .donationMain {
+  /* margin-right: auto; */
   display: flex;
   flex-direction: column;
   gap: 2rem;

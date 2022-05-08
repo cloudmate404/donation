@@ -1,5 +1,5 @@
 export const DONATION_CONTRACT_ADDRESS =
-  "0x28c0e393DB6cD08D9e665d4c4bF094c6Fed88fef";
+  "0x3EeD17b42bEc8c8FEadB11c254233CD7627fb170";
 export const abi = [
   {
     inputs: [
@@ -525,7 +525,7 @@ export const abi = [
     inputs: [],
     name: "withdrawFunds",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {

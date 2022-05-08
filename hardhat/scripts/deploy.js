@@ -21,4 +21,4 @@ main()
     process.exit(1);
   });
 
-// Donation Contract Address: 0x28c0e393DB6cD08D9e665d4c4bF094c6Fed88fef
+// Donation Contract Address: 0x3EeD17b42bEc8c8FEadB11c254233CD7627fb170

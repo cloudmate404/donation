@@ -64,7 +64,9 @@ export default function Home() {
         signer
       );
 
-      const tx = await donationContract.withdrawFunds();
+      const tx = await donationContract.withdrawFunds({
+        value: Number(money),
+      });
       await tx.wait();
     } catch (error) {
       console.error(error);
@@ -125,7 +127,7 @@ export default function Home() {
       // const donatedAmount = utils.parseEther(amount);
 
       const tx = await donationContract.donate({
-        value: utils.parseEther(cost),
+        value: cost.toNumber(),
       });
       await tx.wait();
 
@@ -238,6 +240,29 @@ export default function Home() {
         </div>
       );
     }
+
+    if (walletConnected) {
+      return (
+        <div>
+          <div className={styles.donationMain}>
+            <input
+              type="number"
+              className={styles.input}
+              // value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <button
+              className={styles.button}
+              onClick={() => {
+                donate(amount);
+              }}
+            >
+              Donate
+            </button>
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
@@ -255,14 +280,12 @@ export default function Home() {
       <div className={styles.main}>
         <img className={styles.image} src="/ukr1.jpg" alt="" />
         <div className={styles.title}>Join in helping Ukraine</div>
-        <div>
-          <div className={styles.description}>
-            <span>{totalDonated}</span>
-            <span>{totalDonors}</span>
-            <span>{totalTokensMinted}</span>
-          </div>
-          <div>{renderButton()}</div>
+        <div className={styles.donationInfo}>
+          <h4>{totalDonated} ETH</h4>
+          <h4>{totalDonors} Donors</h4>
+          <h4>{totalTokensMinted} tokens minted</h4>
         </div>
+        <div>{renderButton()}</div>
       </div>
     </div>
   );
